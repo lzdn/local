@@ -1,10 +1,8 @@
 package org.lzdn.platform.dao;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.lzdn.common.utils.Page;
-import org.lzdn.platform.dto.UserDto;
 import org.lzdn.platform.entity.User;
 import org.lzdn.platform.entity.UserExample;
 
@@ -13,7 +11,7 @@ public interface UserMapper {
 
     int deleteByExample(UserExample example);
 
-    int deleteByPrimaryKey(Integer userId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(User record);
 
@@ -21,7 +19,7 @@ public interface UserMapper {
 
     List<User> selectByExample(UserExample example);
 
-    User selectByPrimaryKey(Integer userId);
+    User selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 
@@ -31,5 +29,5 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
     
-    List<User> selectBySelective(Page<UserDto> page);
+    List<User> selectBySelective(Page<User> page);
 }

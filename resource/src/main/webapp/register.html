@@ -31,7 +31,7 @@
 									<label for="userName">帐号</label><input type="text" name="userName" class="form-control" id="userName" />
 								</div>
 								<div class="form-group">
-									<label for="passWord">密码</label><input type="password" name="passWord" class="form-control" id="passWord" />
+									<label for="password">密码</label><input type="password" name="password" class="form-control" id="passWord" />
 								</div>
 								<div class="form-group">
 									<label for="email">邮箱</label><input type="email" name="email" class="form-control" id="email" />
@@ -69,7 +69,7 @@
 				//console.log(registerFormJson)
 				$('#message').html('');
 				var submitForm = $.ajax({
-					url: STATIC_URL + '/webapi/user',
+					url: app.STATIC_URL + '/webapi/user',
 					contentType: "application/json;charset=utf-8",
 					data: registerFormJson,
 					type: 'post',

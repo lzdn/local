@@ -16,7 +16,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
 import org.lzdn.common.utils.Page;
-import org.lzdn.platform.dto.UserDto;
 import org.lzdn.platform.entity.User;
 import org.lzdn.platform.entity.UserExample;
 import org.lzdn.platform.service.UserService;
@@ -39,19 +38,14 @@ public class UserResourceImpl extends BaseResource implements UserResource {
 	private UserService userService;
 
 	@POST
-	@Produces({MediaType.APPLICATION_JSON}) // 响应数据类型
-	@Consumes({MediaType.APPLICATION_JSON}) // 请求数据类型
+	@Produces({ MediaType.APPLICATION_JSON }) // 响应数据类型
+	@Consumes({ MediaType.APPLICATION_JSON }) // 请求数据类型
 	public String addUser(String requestContext) {
-		UserDto record = new UserDto();
-		record = (UserDto) simpleJsonToDto(requestContext, record);
-		try {
-			if (StringUtils.isNotEmpty(record.getUserName()) && StringUtils.isNotEmpty(record.getPassWord())) {
-				userService.insert(record);
-				return success;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		User user = new User();
+		user = (User) simpleJsonToDto(requestContext, user);
+		if (StringUtils.isNotEmpty(user.getUserName()) && StringUtils.isNotEmpty(user.getPassword())) {
+			userService.insert(user);
+			return success;
 		}
 		return fail;
 	}
@@ -61,11 +55,11 @@ public class UserResourceImpl extends BaseResource implements UserResource {
 	@Produces(MediaType.APPLICATION_JSON) //
 	@Consumes(MediaType.APPLICATION_JSON) //
 	public String login(String requestContext) {
-		UserDto record = new UserDto();
-		record = (UserDto) simpleJsonToDto(requestContext, record);
+		User user = new User();
+		user = (User) simpleJsonToDto(requestContext, user);
 		UserExample example = new UserExample();
-		example.createCriteria().andUserNameEqualTo(record.getUserName());
-		example.createCriteria().andPassWordEqualTo(record.getPassWord());
+		example.createCriteria().andUserNameEqualTo(user.getUserName());
+		example.createCriteria().andPasswordEqualTo(user.getPassword());
 		List<User> list = userService.selectByExample(example);
 		JSONArray array = new JSONArray();
 		if (list != null && list.size() > 0) {
@@ -75,38 +69,21 @@ public class UserResourceImpl extends BaseResource implements UserResource {
 			return fail;
 		}
 	}
-/*
-	@GET
-	@Path("/{userName}")
-	@Produces(MediaType.APPLICATION_JSON) //
-	@Override
-	public String queryUserByUserName(@PathParam("userName") final String userName) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		Page<UserDto> page = new Page<UserDto>();
-		UserDto userDto = new UserDto();
-		userDto.setUserName(userName);
-		params.put("user", userDto);
-		page.setParams(params);
-		userService.selectBySelective(page);
-		Result result = new Result(new Header(),new Body("page", page));
-		// BeanUtils.copyProperties(source, target);
-		return result.toString();
-	
-	}*/
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON) //
 	@Override
-	public String queryUserList(@QueryParam("pageNo") Integer pageNo, @QueryParam("limit") Integer limit, @QueryParam("condition") String userName) {
+	public String queryUserList(@QueryParam("pageNo") Integer pageNo, @QueryParam("limit") Integer limit,
+			@QueryParam("condition") String userName) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		Page<UserDto> page = new Page<UserDto>(pageNo==null?1:pageNo,limit==null?5:limit);
-		UserDto userDto = new UserDto();
-		if(StringUtils.isNotEmpty(userName))
-		userDto.setUserName(userName+"%");
+		Page<User> page = new Page<User>(pageNo == null ? 1 : pageNo, limit == null ? 5 : limit);
+		User userDto = new User();
+		if (StringUtils.isNotEmpty(userName))
+			userDto.setUserName(userName + "%");
 		params.put("user", userDto);
 		page.setParams(params);
 		userService.selectBySelective(page);
-		Result result = new Result(new Header(),new Body("page", page));
+		Result result = new Result(new Header(), new Body("page", page));
 		// BeanUtils.copyProperties(source, target);
 		return result.toString();
 	}

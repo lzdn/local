@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 
 import org.lzdn.common.utils.Page;
 import org.lzdn.platform.dao.UserMapper;
-import org.lzdn.platform.dto.UserDto;
 import org.lzdn.platform.entity.User;
 import org.lzdn.platform.entity.UserExample;
 import org.lzdn.platform.service.UserService;
@@ -19,9 +18,9 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 
 	@Override
-	public int insert(UserDto record) {
+	public int insert(User user) {
 		// TODO Auto-generated method stub
-		return userMapper.insert(record);
+		return userMapper.insert(user);
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> selectBySelective(Page<UserDto> page) {
+	public List<User> selectBySelective(Page<User> page) {
 		// TODO Auto-generated method stub
 		return userMapper.selectBySelective(page);
 	}

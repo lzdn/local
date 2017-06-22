@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.lzdn.platform.dao.UserMapper">
 	<resultMap id="BaseResultMap" type="org.lzdn.platform.entity.User">
-		<id column="userId" property="userId" jdbcType="INTEGER" />
-		<result column="userName" property="userName" jdbcType="VARCHAR" />
-		<result column="passWord" property="passWord" jdbcType="VARCHAR" />
+		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Example_Where_Clause">
 		<where>
@@ -21,8 +21,7 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value}
-									and
+									and ${criterion.condition} #{criterion.value} and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -54,8 +53,7 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value}
-									and
+									and ${criterion.condition} #{criterion.value} and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -73,7 +71,7 @@
 		</where>
 	</sql>
 	<sql id="Base_Column_List">
-		userId, userName, passWord, email
+		id, email, password, userName
 	</sql>
 	<select id="selectByExample" resultMap="BaseResultMap"
 		parameterType="org.lzdn.platform.entity.UserExample">
@@ -95,11 +93,11 @@
 		select
 		<include refid="Base_Column_List" />
 		from user
-		where userId = #{userId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from user
-		where userId = #{userId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<delete id="deleteByExample" parameterType="org.lzdn.platform.entity.UserExample">
 		delete from user
@@ -108,42 +106,40 @@
 		</if>
 	</delete>
 	<insert id="insert" parameterType="org.lzdn.platform.entity.User">
-		insert into user (userId,
-		userName, passWord,
-		email)
-		values (#{userId,jdbcType=INTEGER},
-		#{userName,jdbcType=VARCHAR},
-		#{passWord,jdbcType=VARCHAR},
-		#{email,jdbcType=VARCHAR})
+		insert into user (id, email, password,
+		userName)
+		values (#{id,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{userName,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="org.lzdn.platform.entity.User">
 		insert into user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="userId != null">
-				userId,
-			</if>
-			<if test="userName != null">
-				userName,
-			</if>
-			<if test="passWord != null">
-				passWord,
+			<if test="id != null">
+				id,
 			</if>
 			<if test="email != null">
 				email,
 			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="userId != null">
-				#{userId,jdbcType=INTEGER},
+			<if test="password != null">
+				password,
 			</if>
 			<if test="userName != null">
-				#{userName,jdbcType=VARCHAR},
+				userName,
 			</if>
-			<if test="passWord != null">
-				#{passWord,jdbcType=VARCHAR},
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
 			</if>
 			<if test="email != null">
 				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -157,17 +153,17 @@
 	<update id="updateByExampleSelective" parameterType="map">
 		update user
 		<set>
-			<if test="record.userId != null">
-				userId = #{record.userId,jdbcType=INTEGER},
-			</if>
-			<if test="record.userName != null">
-				userName = #{record.userName,jdbcType=VARCHAR},
-			</if>
-			<if test="record.passWord != null">
-				passWord = #{record.passWord,jdbcType=VARCHAR},
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
 			</if>
 			<if test="record.email != null">
 				email = #{record.email,jdbcType=VARCHAR},
+			</if>
+			<if test="record.password != null">
+				password = #{record.password,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userName != null">
+				userName = #{record.userName,jdbcType=VARCHAR},
 			</if>
 		</set>
 		<if test="_parameter != null">
@@ -176,13 +172,10 @@
 	</update>
 	<update id="updateByExample" parameterType="map">
 		update user
-		set userId = #{record.userId,jdbcType=INTEGER},
-		userName =
-		#{record.userName,jdbcType=VARCHAR},
-		passWord =
-		#{record.passWord,jdbcType=VARCHAR},
-		email =
-		#{record.email,jdbcType=VARCHAR}
+		set id = #{record.id,jdbcType=INTEGER},
+		email = #{record.email,jdbcType=VARCHAR},
+		password = #{record.password,jdbcType=VARCHAR},
+		userName = #{record.userName,jdbcType=VARCHAR}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
@@ -190,40 +183,38 @@
 	<update id="updateByPrimaryKeySelective" parameterType="org.lzdn.platform.entity.User">
 		update user
 		<set>
-			<if test="userName != null">
-				userName = #{userName,jdbcType=VARCHAR},
-			</if>
-			<if test="passWord != null">
-				passWord = #{passWord,jdbcType=VARCHAR},
-			</if>
 			<if test="email != null">
 				email = #{email,jdbcType=VARCHAR},
 			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				userName = #{userName,jdbcType=VARCHAR},
+			</if>
 		</set>
-		where userId = #{userId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<update id="updateByPrimaryKey" parameterType="org.lzdn.platform.entity.User">
 		update user
-		set
-		userName = #{userName,jdbcType=VARCHAR},
-		passWord =
-		#{passWord,jdbcType=VARCHAR},
-		email = #{email,jdbcType=VARCHAR}
-		where
-		userId = #{userId,jdbcType=INTEGER}
+		set email = #{email,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		userName = #{userName,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<select id="selectBySelective" parameterType="org.lzdn.common.utils.Page"
-		resultMap="BaseResultMap">
+
+	<select id="selectBySelective" resultMap="BaseResultMap"
+		parameterType="org.lzdn.common.utils.Page">
 		select
 		<include refid="Base_Column_List" />
 		from user
 		<if test="_parameter != null">
 			<where>
 				<if test="params.user.userName != null">
-					userName like #{params.user.userName,jdbcType=VARCHAR}
+					and userName like #{params.user.userName}
 				</if>
 			</where>
 		</if>
-		order by userId
+			order by id
 	</select>
 </mapper>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>用户信息</title>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/font-awesome.css" />
+		<link rel="stylesheet" href="css/custom-styles.css" />
+		<link rel="stylesheet" href="css/site-home.css" />
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<nav class="navbar navbar-default top-navbar" role="navigation">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="index.html"><i class="fa fa-lemon-o"></i> <strong>LZDN</strong></a>
+				</div>
+
+				<ul class="nav navbar-top-links navbar-right">
+					<li>
+						<i class="badge" id="currUser"></i>
+					</li>
+					<!-- /.dropdown -->
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+							<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li>
+								<a href="javascript:void(0);" id="userProfile"><i class="fa fa-user fa-fw"></i>用户信息</a>
+							</li>
+							<!--<li>
+								<a href="javascript:void(0);" id="setting"><i class="fa fa-gear fa-fw"></i>系统设置</a>
+							</li>-->
+							<li class="divider"></li>
+							<li>
+								<a href="logout.html" id="logout"><i class="fa fa-sign-out fa-fw"></i>注销</a>
+							</li>
+						</ul>
+						<!-- /.dropdown-user -->
+					</li>
+					<!-- /.dropdown -->
+				</ul>
+			</nav>
+			<!--/. NAV TOP  -->
+			<nav class="navbar-default navbar-side" role="navigation">
+				<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+				<div class="sidebar-collapse">
+					<ul class="nav" id="main-menu">
+
+						<li>
+							<a class="" href="home.html"><i class="fa fa-home"></i>Home</a>
+
+						</li>
+						<li class="active" disabled>
+							<a href="javascript:void(0);"><i class="fa fa-user"></i>用户管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse in" aria-expanded="true" style="height: 50px;">
+								<li>
+									<a href="javascript:void(0);" class="active active-menu"><i class="fa fa-search-minus"></i>查询用户</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-power-off"></i>权限管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a href="#"><i class="fa fa-anchor"></i>权限分配</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-bookmark"></i>资料管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a href="#"><i class="fa fa-search-minus"></i>查询资料</a>
+								</li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#"><i class="fa fa-gear fa-fw"></i>系统设置<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a href="#"><i class="fa fa-jsfiddle"></i>监控数据</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+
+				</div>
+
+			</nav>
+			<!-- /. NAV SIDE  -->
+			<div id="page-wrapper">
+				<div id="page-inner">
+					<div class="row clearfix">
+						<div class="col-md-12 column">
+							<input type="text" class="input-sm" id="searchInput" placeholder="用户名称" />
+							<input type="button" class="btn-primary" value="查询" onclick="queryUserByName()" />
+						</div>
+					</div>
+					<div class="row clearfix">
+						<div class="col-md-12 column">
+							<form id="userForm" class="">
+								<table id="userTable" class="table table-bordered">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>用户编号</th>
+											<th>用户姓名</th>
+											<th>用户邮箱</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td scope="row" colspan="5">
+												<a href="javascript:void();" onclick="tab.createUser()">[添加新用户]</a>
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+							</form>
+						</div>
+					</div>
+					<div class="row clearfix">
+						<div class="col-md-12 column">
+							<ul class="pagination pagination-sm" id="pagination">
+								<!--
+                                	作者：415656544@qq.com
+                                	时间：2017-06-14
+                                	描述：分页
+                                -->
+							</ul>
+						</div>
+					</div>
+					<span id="message" style="color: red;"></span>
+					<footer style="text-align: center;">
+						<p>Copyright &copy; 2017.Lzdn All rights reserved.</p>
+					</footer>
+
+				</div>
+				<!-- /. PAGE INNER  -->
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.metisMenu.js"></script>
+	<script type="text/javascript" src="js/jquery.serializejson.min.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/table.js"></script>
+	<script type="text/javascript" src="js/site.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('#message').html('');
+			var queryUserList = $.ajax({
+				url: app.STATIC_URL + '/webapi/user',
+				contentType: "application/json;charset=utf-8",
+				data: '',
+				type: 'get',
+				cache: false,
+				timeout: 5000,
+				dataType: 'text',
+				//在请求之前调用的函数
+				beforeSend: function() {
+					$('#message').html('正在查询中...');
+				},
+				success: function(data) {
+					$('#message').html('查询成功！');
+					tab.showUserTable(data);
+				},
+				//调用执行后调用的函数
+				complete: function(XMLHttpRequest, status) {　
+					if(status == 'timeout') {
+						//超时,status还有success,error等值的情况
+						queryUserList.abort();　　　　　
+						$('#message').html('请求超时，请检测网络！');　　　
+					}
+				},
+				error: function() {
+					$('#message').html('服务器异常！');
+				}
+			});
+		});
+
+		function goPage(pageno) {
+			pager.pageNo = pageno;
+			pager.actionUrl = "/webapi/user";
+			pager.messageId = "#message";
+			pager.goPage(tab.showUserTable);
+		}
+
+		function queryUserByName() {
+			var tbody = $('#userTable tbody');
+			var searchInput = $('#searchInput').val();
+			$.ajax({
+				url: app.STATIC_URL + '/webapi/user/' + searchInput,
+				contentType: "text/html;charset=utf-8", //客户端请求数据类型
+				data: searchInput,
+				type: 'get',
+				cache: false,
+				timeout: 5000,
+				dataType: 'text', //服务器返回的数据
+				//在请求之前调用的函数
+				beforeSend: function() {
+					$('#message').html('正在查询中...');
+				},
+				success: function(data) {
+					$('#message').html('查询成功！');
+					tab.showUserTable(data);
+				},
+				//调用执行后调用的函数
+				complete: function(XMLHttpRequest, status) {　
+					if(status == 'timeout') {
+						//超时,status还有success,error等值的情况
+						queryUserList.abort();　　　　　
+						$('#message').html('请求超时，请检测网络！');　　　
+					}
+				},
+				error: function() {
+					$('#message').html('服务器异常！');
+				}
+			});
+		}
+
+		function deleteUserByUserId(userId) {
+			$('#message').html('');
+			var deleteUser = $.ajax({
+				url: app.STATIC_URL + '/webapi/user/' + userId,
+				contentType: "application/json;charset=utf-8",
+				data: '',
+				type: 'delete',
+				cache: false,
+				timeout: 5000,
+				dataType: 'text',
+				//在请求之前调用的函数
+				beforeSend: function() {
+					$('#message').html('正在执行中...');
+				},
+				success: function(data) {
+					$('#message').html('删除成功！');
+					queryUserByName();
+				},
+				//调用执行后调用的函数
+				complete: function(XMLHttpRequest, status) {　
+					if(status == 'timeout') {
+						//超时,status还有success,error等值的情况
+						deleteUser.abort();　　　　　
+						$('#message').html('请求超时，请检测网络！');　　　
+					}
+				},
+				error: function() {
+					$('#message').html('服务器异常！');
+				}
+			});
+		}
+
+		function submitForm() {
+			var userForm = JSON.stringify($("#userForm").serializeJSON());
+			$('#message').html('');
+			var submitFm = $.ajax({
+				url: app.STATIC_URL + '/webapi/user',
+				contentType: "application/json;charset=utf-8",
+				data: userForm,
+				type: 'post',
+				cache: false,
+				timeout: 5000,
+				dataType: 'text',
+				//在请求之前调用的函数
+				beforeSend: function() {
+					$('#message').html('正在执行中...');
+				},
+				success: function(data) {
+					$('#message').html('保存成功！');
+					queryUserByName();
+				},
+				//调用执行后调用的函数
+				complete: function(XMLHttpRequest, status) {　
+					if(status == 'timeout') {
+						//超时,status还有success,error等值的情况
+						submitFm.abort();　　　　　
+						$('#message').html('请求超时，请检测网络！');　　　
+					}
+				},
+				error: function() {
+					$('#message').html('服务器异常！');
+				}
+			});
+		}
+	</script>
+
+</html>

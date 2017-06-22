@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN" "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+<urlrewrite>
+	<rule>
+		<note>重写用户登录注册</note>
+		<note>example：user/register</note>
+		<from>/user/([A-Za-z0-9]+)</from>
+		<to type="forward">/page/user/$1.rest</to>
+	</rule>
+	<outbound-rule match-type="regex">
+		<note>重写返回客户端的url</note>
+		<from>/page/user/([A-Za-z0-9]+).rest</from>
+		<to>//user/([A-Za-z0-9]+)</to>
+	</outbound-rule>
+	
+	<!-- <rule> <note>重写index.jsp成index.html</note> <note>example：/index.html</note> 
+		<from>/index.html</from> <to type="forward">/index.jsp</to> </rule> <rule> 
+		<note>将view根目录下所有jsp资源重写成/xxx.action</note> <note>example：/index.action</note> 
+		<from>/([A-Za-z0-9]+).action</from> <to type="forward">/view/$1.jsp</to> 
+		</rule> <rule> <note>forward(转发模式)传参</note> <note>example：/user/param/fancy/8080.do</note> 
+		<from>/user/([A-Za-z0-9]+)/([A-Za-z0-9]+)/([A-Za-z0-9]+).do</from> <to type="forward">/view/parameter/$1.jsp?username=$2&amp;password=$3</to> 
+		</rule> <rule> <note>redirect(重定向模式)传参,to中写绝对地址</note> <note>example：/admin/param/fancy/8080.do</note> 
+		<from>/admin/([A-Za-z0-9]+)/([A-Za-z0-9]+)/([A-Za-z0-9]+).do</from> <to type="redirect">/urlrewrite-maven-example/view/parameter/$1.jsp?username=$2&amp;password=$3</to> 
+		</rule> -->
+
+	<!-- 1. confReloadCheckInterval: 配置文件重加载间隔. 0表示随时加载, -1表示不重加载, 默认-1 2. confPath: 
+		配置文件路径. 是相对context的路径, 默认/WEB-INF/urlrewrite.xml 3. logLevel: 设置日志级别, 可以是: 
+		TRACE, DEBUG, INFO(默认), WARN, ERROR, FATAL, log4j, commons, slf4j, sysout:{level}(比如 
+		sysout:DEBUG), 如果你使用普通的日志级别有一定困难, 可以调为: sysout:DEBUG(表明是使用控制台输出的调试级别) 4. 
+		statusPath: 设置改变状态路径, 不能和已经安装的应用冲突(注意, 默认是/rewrite-status), 注意, 必须以/开始 5. 
+		statusEnabled: 设置status是否开启, 期望得到的值是true, false, 默认true 6. statusEnabledOnHosts: 
+		设置允许status的主机, *可以被用作通配符, 默认是”localhost, local, 127.0.0.1” 7. modRewriteConf: 
+		设置rewrite模式, 默认是false, 使用mod-rewrite(可以参照apache服务器的mod_rewrite相关资料)方式的配置文件, 
+		如果设置为true并且confPath没有设置则配置文件路径将会被默认为/WEB-INF/.htaccess 8. modRewriteConfText: 
+		从这些参数的值加从载mod_rewrite样式的配置, 设置这些参数则其他所有的参数都会被忽略. 比如: <init-param> <param-name>modRewriteConfText</param-name> 
+		<param-value> RewriteRule ^/~([^/]+)/?(.*) /u/$1/$2 [R] RewriteRule ^/([uge])/([^/]+)$ 
+		/$1/$2/ [R] </param-value> </init-param> 9. allowConfSwapViaHttp: 设置是否允许通过HTTP方式交互设置参数, 
+		比如, 通过调用/rewrite-status/?conf=WEB-INF/urlrewrite2.xml -->
+
+</urlrewrite>
+

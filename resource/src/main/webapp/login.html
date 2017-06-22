@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>登录</title>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/font-awesome.css" />
+		<link rel="stylesheet" href="css/custom-styles.css" />
+		<link rel="stylesheet" href="css/site.css" />
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<nav class="navbar navbar-default top-navbar" role="navigation">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="index.html"><i class="fa fa-lemon-o"></i> <strong>LZDN</strong></a>
+				</div>
+				<ul class="nav navbar-top-links navbar-right">
+					<li class="dropdown">
+						<a href="register.html" class="badge"><i class="fa fa-user-circle"></i>注&nbsp;册</a>
+					</li>
+				</ul>
+			</nav>
+			<!--/. NAV TOP  -->
+
+			<!-- /. NAV SIDE  -->
+			<div id="page-wrapper">
+				<div id="page-inner">
+
+					<div class="row clearfix">
+						<div class="col-md-4 column">
+						</div>
+						<div class="col-md-4 column">
+							<form role="form" id="loginForm">
+								<div class="form-group">
+									<label for="userName">帐号</label><input type="text" name="userName" class="form-control" id="userName" />
+								</div>
+								<div class="form-group">
+									<label for="passWord">密码</label><input type="password" name="passWord" class="form-control" id="passWord" />
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox" />记住我</label>
+								</div> <button type="button" class="btn btn-default" id="submitFm">登录</button>
+							</form>
+						</div>
+						<div class="col-md-4 column">
+							<span id="message" style="color: red;"></span>
+						</div>
+					</div>
+					<footer style="text-align: center;">
+						<p>Copyright &copy; 2017.Lzdn All rights reserved.</p>
+					</footer>
+				</div>
+				<!-- /. PAGE INNER  -->
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.metisMenu.js"></script>
+	<script type="text/javascript" src="js/jquery.serializejson.min.js"></script>
+	<script type="text/javascript" src="js/app.js" ></script>
+	<script type="text/javascript" src="js/site.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('#submitFm').click(function() {
+				var loginFormFormJson = JSON.stringify($("#loginForm").serializeJSON());
+				//console.log(registerFormJson)
+				$('#message').html('');
+				var submitForm = $.ajax({
+					url: app.STATIC_URL + '/webapi/user/login',
+					contentType: "application/json;charset=utf-8",
+					data: loginFormFormJson,
+					type: 'post',
+					cache: false,
+					timeout: 5000,
+					dataType: 'text',
+					//在请求之前调用的函数
+					beforeSend: function() {
+						$('#message').html('正在登录中...');
+					},
+					success: function(data) {
+						if(data && data != 'fail') {
+							$('#message').html('登录成功！');
+							app.initSession(data);
+							window.location.href = "index.html";
+						} else {
+							$('#message').html('登录失败！');
+						}
+
+					},
+					//调用执行后调用的函数
+					complete: function(XMLHttpRequest, status) {　
+						if(status == 'timeout') {
+							//超时,status还有success,error等值的情况
+							submitForm.abort();　　　　　
+							$('#message').html('请求超时，请检测网络！');　　　
+						}
+					},
+					error: function() {
+						$('#message').html('服务器异常！');
+					}
+				});
+			});
+
+		});
+	</script>
+
+</html> 

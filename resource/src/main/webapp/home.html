@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>Home</title>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/font-awesome.css" />
+		<link rel="stylesheet" href="css/custom-styles.css" />
+		<link rel="stylesheet" href="css/site-home.css" />
+
+		</style>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<nav class="navbar navbar-default top-navbar" role="navigation">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="index.html"><i class="fa fa-lemon-o"></i> <strong>LZDN</strong></a>
+				</div>
+
+				<ul class="nav navbar-top-links navbar-right">
+					<li>
+						<i class="badge" id="currUser"></i>
+					</li>
+					<!-- /.dropdown -->
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+							<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li>
+								<a href="javascript:void(0);" id="userProfile"><i class="fa fa-user fa-fw"></i>用户信息</a>
+							</li>
+							<!--<li>
+								<a href="javascript:void(0);" id="setting"><i class="fa fa-gear fa-fw"></i>系统设置</a>
+							</li>-->
+							<li class="divider"></li>
+							<li>
+								<a href="logout.html" id="logout"><i class="fa fa-sign-out fa-fw"></i>注销</a>
+							</li>
+						</ul>
+						<!-- /.dropdown-user -->
+					</li>
+					<!-- /.dropdown -->
+				</ul>
+			</nav>
+			<!--/. NAV TOP  -->
+			<nav class="navbar-default navbar-side" role="navigation">
+				<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+				<div class="sidebar-collapse">
+					<ul class="nav" id="main-menu">
+
+						<li>
+							<a class="active-menu" href="javascript:void(0);"><i class="fa fa-home"></i>Home</a>
+
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-user"></i>用户管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a href="user.html"><i class="fa fa-search-minus"></i>查询用户</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-power-off"></i>权限管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a href="#"><i class="fa fa-anchor"></i>权限分配</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-bookmark"></i>资料管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a href="#"><i class="fa fa-search-minus"></i>查询资料</a>
+								</li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#"><i class="fa fa-gear fa-fw"></i>系统设置<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a href="#"><i class="fa fa-jsfiddle"></i>监控数据</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+
+				</div>
+
+			</nav>
+			<!-- /. NAV SIDE  -->
+			<div id="page-wrapper">
+				<div id="page-inner">
+					<div class="row clearfix">
+						<div class="col-md-12 column">
+							<div class="well-sm">
+								<h3>
+									欢迎使用LZDN系统！
+								</h3>
+								<p>
+									<em>LZDN</em>是一个学习资料管理系统，最初由<strong>林子大鸟</strong>编写。
+								</p>
+							</div>
+						</div>
+					</div>
+					<footer style="text-align: center;">
+						<p>Copyright &copy; 2017.Lzdn All rights reserved.</p>
+					</footer>
+				</div>
+				<!-- /. PAGE INNER  -->
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.metisMenu.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/site.js"></script>
+
+</html>

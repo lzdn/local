@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0"><!-- app名称 -->
+	<display-name>resource</display-name><!-- 初始化配置文件 -->
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring-context.xml</param-value>
+	</context-param><!--对所有请求编码进行过滤 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<!-- <filter> <filter-name>sitemesh</filter-name> <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class> 
+		</filter> -->
+	<!-- 加到任何servlet映射的顶部,不然可能有些路径不能被过滤到 http://urlrewritefilter.googlecode.com/svn/trunk/src/doc/manual/3.2/index.html -->
+	<!-- <filter> <filter-name>UrlRewriteFilter</filter-name> <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class> -->
+	<!-- 设备文件重加载间隔 (0默示随时加载， -1默示不重加载， 默认-1) -->
+	<!-- <init-param> <param-name>confReloadCheckInterval</param-name> <param-value>60</param-value> 
+		</init-param> -->
+	<!-- 自定义配置文件的路径,是相对context的路径,(默认位置 /WEB-INF/urlrewrite.xml) -->
+	<!-- <init-param> <param-name>confPath</param-name> <param-value>/WEB-INF/urlrewrite.xml</param-value> 
+		</init-param> -->
+	<!-- 设置日志级别（将被记录到日志中） 可以为: TRACE, DEBUG, INFO (default), WARN, ERROR, FATAL, 
+		log4j, commons, slf4j, 比如 sysout:DEBUG（设置到控制台调试输出级别） (默认级别 WARN) -->
+	<!-- <init-param> <param-name>logLevel</param-name> <param-value>DEBUG</param-value> 
+		</init-param> </filter> -->
+	<filter>
+		<filter-name>corsfilter</filter-name>
+		<filter-class>org.lzdn.platform.filter.CORSFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>corsfilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- <filter-mapping> <filter-name>UrlRewriteFilter</filter-name> <dispatcher>REQUEST</dispatcher> 
+		<dispatcher>FORWARD</dispatcher> <dispatcher>INCLUDE</dispatcher> <url-pattern>/*</url-pattern> 
+		</filter-mapping> -->
+	<!-- <filter-mapping> <filter-name>sitemesh</filter-name> <dispatcher>REQUEST</dispatcher> 
+		<dispatcher>FORWARD</dispatcher> <url-pattern>/*</url-pattern> </filter-mapping> -->
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 1、此监听器主要用于解决java.beans.Introspector导致的内存泄漏的问题 2、此监听器应该配置在web.xml中与Spring相关监听器中的第一个位置(也要在ContextLoaderListener的前面) 
+		3、JDK中的java.beans.Introspector类的用途是发现Java类是否符合JavaBean规范如果有的框架或程序用到了Introspector类,那么就会启用一个系统级别的缓存,此缓存会 
+		存放一些曾加载并分析过的JavaBean的引用。当Web服务器关闭时,由于此缓存中存放着这些JavaBean的引用,所以垃圾回收器无法回收Web容器中的JavaBean对象,最后导致 
+		内存变大。而org.springframework.web.util.IntrospectorCleanupListener就是专门用来处理Introspector内存泄漏问题的辅助类。IntrospectorCleanupListener会在 
+		Web服务器停止时清理Introspector缓存,使那些Javabean能被垃圾回收器正确回收。Spring自身不会出现这种问题，因为Spring在加载并分析完一个类之后会马上刷新 
+		JavaBeans Introspector缓存,这就保证Spring中不会出现这种内存泄漏的问题。但有些程序和框架在使用了JavaBeans Introspector之后,没有进行清理工作(如 
+		Quartz,Struts),最后导致内存泄漏 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener><!-- ContextLoaderListener监听器的作用就是启动Web容器时， 自动装配ApplicationContext的配置信息。 
+		因为它实现了ServletContextListener这个接口，在web.xml配置这个监听器， 启动容器时，就会默认执行它实现的方法。至于ApplicationContext.xml这个配置文件部署在哪， 
+		如何配置多个xml文件，书上都没怎么详细说明。现在的方法就是查看它的API文档。 在ContextLoaderListener中关联了ContextLoader这个类， 
+		所以整个加载配置过程由ContextLoader来完成。看看它的API说明。 第一段说明ContextLoader可以由 ContextLoaderListener和ContextLoaderServlet生成。 
+		如果查看ContextLoaderServlet的API， 可以看到它也关联了ContextLoader这个类而且它实现了HttpServlet这个接口。 
+		第二段，ContextLoader创建的是 XmlWebApplicationContext这样一个类， 它实现的接口是 WebApplicationContext-> 
+		ConfigurableWebApplicationContext-> ApplicationContext->BeanFactory 这样一来spring中的所有bean都由这个类来创建 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<servlet>
+		<description>spring mvc servlet</description>
+		<servlet-name>rest</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- <servlet> <servlet-name>CoreServlet</servlet-name> <servlet-class>com.weixin.core.servlet.CoreServlet</servlet-class> 
+		</servlet> -->
+	<!-- <servlet-mapping> <servlet-name>CoreServlet</servlet-name> <url-pattern>/coreServlet</url-pattern> 
+		</servlet-mapping> -->
+	<!-- <servlet> <servlet-name>jersey-serlvet</servlet-name> <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class> 
+		<init-param> <param-name>jersey.config.server.provider.packages</param-name> 
+		<param-value>org.sys.web.api.service</param-value> </init-param> <load-on-startup>1</load-on-startup> 
+		</servlet> -->
+	<!-- <servlet> <description>jersey 1.9 </description> <servlet-name>jersey-serlvet</servlet-name> 
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class> 
+		<init-param> <param-name>com.sun.jersey.config.property.packages</param-name> 
+		<param-value>org.lzdn.web.api</param-value> </init-param> <init-param> <param-name>com.sun.jersey.config.feature.DisableWADL</param-name> 
+		<param-value>true</param-value> </init-param> <load-on-startup>1</load-on-startup> 
+		</servlet> -->
+	<!-- <servlet-mapping> <servlet-name>jersey-serlvet</servlet-name> <url-pattern>/webapi/*</url-pattern> 
+		</servlet-mapping> -->
+	<servlet>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>org.lzdn.web.base.BaseApplication</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<url-pattern>/webapi/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>rest</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<servlet-name>rest</servlet-name>
+	</filter-mapping>
+	<session-config>
+		<session-timeout>90</session-timeout>
+	</session-config><!-- <welcome-file>welcome.jsp</welcome-file> -->
+	<!-- 404错误 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.html</location>
+	</error-page>
+	<!-- 500错误 -->
+	<error-page>
+		<error-code>500</error-code>
+		<location>/500.html</location>
+	</error-page>
+	<welcome-file-list>
+		<welcome-file>/index.html</welcome-file>
+	</welcome-file-list>
+</web-app>

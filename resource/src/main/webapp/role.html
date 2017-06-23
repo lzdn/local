@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8" />
-		<title>用户管理</title>
+		<title>角色管理</title>
 		<link rel="stylesheet" href="css/bootstrap.css" />
 		<link rel="stylesheet" href="css/font-awesome.css" />
 		<link rel="stylesheet" href="css/custom-styles.css" />
@@ -48,27 +48,26 @@
 				<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
 				<div class="sidebar-collapse">
 					<ul class="nav" id="main-menu">
-
 						<li>
 							<a class="" href="home.html"><i class="fa fa-home"></i>Home</a>
 
 						</li>
-						<li class="active" disabled>
+						<li>
 							<a href="javascript:void(0);"><i class="fa fa-user"></i>用户管理<span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level collapse in" aria-expanded="true" style="height: 50px;">
+							<ul class="nav nav-second-level " >
 								<li>
-									<a href="javascript:void(0);" class="active active-menu"><i class="fa fa-search-minus"></i>查询用户</a>
+									<a href="user.html" ><i class="fa fa-search-minus"></i>查询用户</a>
 								</li>
 							</ul>
 						</li>
-						<li>
+						<li class="active" disabled >
 							<a href="#"><i class="fa fa-power-off"></i>权限管理<span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level">
+							<ul class="nav nav-second-level collapse in" aria-expanded="true" style="height: 150px;">
 								<li>
 									<a href="#"><i class="fa fa-anchor"></i>权限分配</a>
 								</li>
 								<li>
-									<a href="role.html"><i class="fa fa-anchor"></i>角色管理</a>
+									<a href="role.html" class="active active-menu"><i class="fa fa-anchor"></i>角色管理</a>
 								</li>
 								<li>
 									<a href="#"><i class="fa fa-anchor"></i>权限管理</a>
@@ -102,7 +101,7 @@
 				<div id="page-inner">
 					<div class="row clearfix">
 						<div class="col-md-12 column">
-							<input type="text" class="input-sm" id="searchInput" placeholder="用户名称" />
+							<input type="text" class="input-sm" id="searchInput" placeholder="角色名称" />
 							<input type="button" class="btn-primary" value="查询" onclick="queryUserByName()" />
 						</div>
 					</div>
@@ -113,9 +112,8 @@
 									<thead>
 										<tr>
 											<th>#</th>
-											<th>用户编号</th>
-											<th>用户姓名</th>
-											<th>用户邮箱</th>
+											<th>角色编号</th>
+											<th>角色名称</th>
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -124,7 +122,7 @@
 									<tfoot>
 										<tr>
 											<td scope="row" colspan="5">
-												<a href="javascript:void();" onclick="tab.createUser()">[添加新用户]</a>
+												<a href="javascript:void();" onclick="tab.createUser()">[添加新角色]</a>
 											</td>
 										</tr>
 									</tfoot>
@@ -135,11 +133,6 @@
 					<div class="row clearfix">
 						<div class="col-md-12 column">
 							<ul class="pagination pagination-sm" id="pagination">
-								<!--
-                                	作者：415656544@qq.com
-                                	时间：2017-06-14
-                                	描述：分页
-                                -->
 							</ul>
 						</div>
 					</div>
@@ -165,7 +158,7 @@
 		$(function() {
 			$('#message').html('');
 			var queryUserList = $.ajax({
-				url: app.STATIC_URL + '/webapi/user',
+				url: app.STATIC_URL + '/webapi/role',
 				contentType: "application/json;charset=utf-8",
 				data: '',
 				type: 'get',
